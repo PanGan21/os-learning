@@ -35,15 +35,16 @@ void *producer(void *param)
         buffer[add] = i; // Buffer not full, so add element
         add = (add + 1) % BUF_SIZE;
         num++;
+        printf("Producer: inserted %d\n", i);
+        printf("Producer: buffer size: %d\n\n", num);
 
         pthread_mutex_unlock(&m);
 
         pthread_cond_signal(&c_cons);
-        printf("Producer: inserted %d\n", i);
         fflush(stdout);
     }
 
-    printf("Producer quiting'n");
+    printf("****Producer quiting****\n\n");
     fflush(stdout);
     return 0;
 }
@@ -68,10 +69,12 @@ void *consumer(void *param)
         i = buffer[rem]; // Buffer not empty so remove element
         rem = (rem + 1) % BUF_SIZE;
         num--;
+
+        printf("Consumer: removed value %d\n", i);
+        printf("Consumer: buffer size: %d\n\n", num);
         pthread_mutex_unlock(&m);
 
         pthread_cond_signal(&c_prod);
-        printf("Consumer: removed value %d\n", i);
         fflush(stdout);
     }
     return 0;
